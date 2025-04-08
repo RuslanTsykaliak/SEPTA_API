@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  fastapi:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - MONGO_URI=mongodb+srv://<your_username>:<your_password>@<cluster_url>/<dbname>?retryWrites=true&w=majority
