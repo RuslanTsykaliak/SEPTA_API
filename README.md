@@ -74,3 +74,35 @@ pymongo[srv]
 
 - Accepts any valid lat/lon input
 - Returns GeoJSON, a standardized format supported globally
+
+
+
+# 🧠 Approach & Design Write-Up
+
+## ✅ **Approach**
+
+The goal was to build a lightweight, scalable HTTP API that returns the nearest SEPTA Regional Rail station in GeoJSON format, using a provided dataset.
+
+1. **FastAPI** was chosen as the web framework due to its speed, ease of development, and built-in OpenAPI support.
+2. The dataset (`doc.geojson`) was preloaded and parsed at application startup to enable fast access without querying a large database each time.
+3. A **nearest-neighbor search** is performed by calculating geospatial distances between the input coordinates and each station.
+4. MongoDB Atlas was used for cloud database storage, with potential caching or logging use in mind.
+5. The application was containerized with **Docker** to support consistent deployments and future scalability.
+
+---
+
+## ⚠️ **Challenges Faced**
+
+- **GeoJSON Parsing:** Ensuring proper handling of GeoJSON format and consistent return of valid GeoJSON required testing and validation.
+- **Distance Calculations:** Handling accurate distance comparisons (using Haversine formula or geopy) without relying on heavyweight GIS libraries.
+- **Cost Management:** Striving for low resource usage while still allowing future scalability.
+- **Docker Setup:** Structuring the project for clean Docker image builds without hardcoding environment-specific settings.
+
+---
+
+## 🧱 **Design Decisions**
+
+- **Cloud MongoDB Atlas** was selected for flexibility, free tier availability, and the ability to scale later if needed.
+- **Local GeoJSON File Loading** was preferred over storing all records in MongoDB to reduce read costs and minimize API latency.
+- **Docker & Compose** were used to isolate the service, simplifying future deployment to cloud infrastructure or orchestration platforms like Kubernetes.
+- **No External APIs** were used for directions to ensure offline support and zero reliance on costly third-party services.
